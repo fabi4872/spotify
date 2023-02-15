@@ -12,6 +12,10 @@
   margin: 5rem 0;
 }
 
-#formulario-item-height{
+#formulario-input{
   height: 4rem;
+}
+
+.modal-header{
+  background-color: #F8F9FA;
 }
