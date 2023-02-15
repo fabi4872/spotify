@@ -4,6 +4,14 @@
   box-sizing: border-box;
 }
 
-.navbar__btn-info:hover{
-  color: white;
+#formulario{
+  margin: 5rem 0;
+}
+
+#titulo-h1{
+  margin: 5rem 0;
+}
+
+#formulario-item-height{
+  height: 4rem;
 }
