@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="static/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+        integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+      rel="stylesheet" 
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" 
+      crossorigin="anonymous"/>
+    <link rel="stylesheet" href="static/style.css">
+    <title>Spotify</title>
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar bg-body-tertiary">
+        <div class="container">
+          <a class="navbar-brand logo" href=""><strong>Spotify-Playlist</strong></a>  
+          <div>
+            <a href="" class="btn btn-outline-dark">Sign in</a>
+            <a href="" class="btn btn-primary">Sign up</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="container">
+        <h1 class="text-center" data-v-75bed125="" id="titulo-h1">Download mp3 songs from your Spotify playlist</h1>
+        <div class="col-md-8 offset-2">
+          <form action="" class="d-flex" role="search" id="formulario">
+            <input class="form-control" type="search" placeholder="Enter playlist url..." aria-label="Search" id="formulario-input" value="">
+            <button class="btn btn-outline-success" id="formulario-btn-download" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Presione para descargar enlaces">Download</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="container">
+        <table class="table table-light table-striped">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Youtube Link</th>
+              <th scope="col">Track Name</th>
+              <th scope="col">Artist Name</th>
+              <th scope="col">Convert</th>
+              <th scope="col">Download</th>
+              <th scope="col">Play</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            
+          </tbody>
+        </table>
+        <h5 class="text-center" id="titulo-h5-no-results">No results available</h5>
+      </section>
+    </main>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden id="modal-btn">
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Spotify-List Message</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="modal-body">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" 
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" 
+      crossorigin="anonymous">
+    </script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous">
+    </script>
+
+    <script>
+      $(document).ready(function() {
+        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        document.getElementById("formulario-btn-download").addEventListener("mouseover", () => {
+          $('.tooltip').show();
+        });
+
+        document.getElementById("formulario-btn-download").addEventListener("mouseout", () => {
+          $('.tooltip').hide();
+        });
+
+        document.getElementById("formulario-btn-download").addEventListener("click", () => {
+          activarLoading();
+          setTimeout(function(){
+            verificarInput();
+          }, 3000);
+        });
+      });
+    </script>
+       
+    <script>
+      function reportarError(error){
+        document.getElementById("table-body").innerHTML = "";
+        $("#titulo-h5-no-results").show();
+        let modalBody = document.getElementById("modal-body");
+        modalBody.innerText = "";
+        modalBody.innerText = `Error: ${JSON.stringify(error)}`;
+        $("#modal-btn").click();
+        desactivarLoading();
+      }
+
+      function insertarFilasTabla(result){
+        $("#titulo-h5-no-results").hide();
+        let tableBody = document.getElementById("table-body");
+        tableBody.innerHTML = "";
+        result.forEach(element => {
+          tableBody.innerHTML += `
+            <tr>
+              <th scope="row">${element.indice}</th>
+              <td>${element.enlace}</td>
+              <td>${element.track_name}</td>
+              <td>${element.artist_name}</td>
+              <td><button class="icon-button"><i class="fa-solid fa-rotate icon icon-convert"></i></button></td>
+              <td><button disabled class="icon-button"><i class="fa-solid fa-download icon icon-download des"></i></button></td>
+              <td><button disabled class="icon-button"><i class="fa-solid fa-play icon icon-play des"></i></button></td>
+            </tr>
+          `
+        });
+        desactivarLoading();
+      }
+
+      function obtenerEnlacesYoutube() {
+        $.ajax({
+          url: '/api/obtener_enlaces_youtube',
+          type: 'GET',
+          success: function (result) {
+            insertarFilasTabla(result);
+          },
+          error: function (error) {
+            reportarError(error);
+          }
+        });
+      }
+
+      function activarLoading(){
+        document.getElementById("formulario-btn-download").classList.replace("btn-outline-success", "btn-success");
+        document.getElementById("formulario-btn-download").innerHTML = `
+          <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        `
+      }
+
+      function desactivarLoading(){
+        document.getElementById("formulario-btn-download").classList.replace("btn-success", "btn-outline-success");
+        document.getElementById("formulario-btn-download").innerHTML = "Download";
+      }
+
+      function verificarInput(){
+        let modalBody = document.getElementById("modal-body");
+        modalBody.innerText = "";
+        let formularioInput = document.getElementById("formulario-input").value;
+        if(formularioInput == "" || formularioInput == undefined){
+          modalBody.innerText = "Debe ingresar una url válida";
+          $("#modal-btn").click();
+          desactivarLoading();
+        }
+        else{
+          obtenerEnlacesYoutube();
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.logo{
+  color: #706e6e;
+}
+
+.logo:hover{
+  color: #706e6e;
+}
+
+#formulario{
+  margin: 5rem 0;
+}
+
+#titulo-h1{
+  margin: 5rem 0;
+  color: tomato;
+}
+
+#titulo-h5-no-results{
+  color: #CCC;
+}
+
+#formulario-input{
+  height: 4rem;
+}
+
+.modal-header{
+  background-color: #F8F9FA;
+}
+
+.icon{
+  font-size: 1rem;
+}
+
+.icon-button{
+  border: none;
+  background-color: transparent;
+}
+
+.icon-convert{
+  color: green;
+}
+
+.icon-download{
+  color: #183153;
+}
+
+.icon-play{
+  color: red;
+}
+
+.des{
+  color: #ccc;
+}
