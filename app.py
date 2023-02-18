@@ -8,12 +8,14 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 
 app = Flask(__name__)    
-    
-@app.get('/api/obtener_enlaces_youtube')
+
+#playlist_LINK = "https://open.spotify.com/playlist/29KoPj20uHyOknHNJnrXEk?si=ecfc9126881f4011" 
+@app.post('/api/obtener_enlaces_youtube')
 def obtener_enlaces_youtube():
+    new_link = request.get_json()
+    playlist_LINK = new_link['link']
     cid = "2fe4fd32de64419988cfd0e7fb6e812e"
     secret = "6675fc7579a24e688a71dbda483d768e"
-    playlist_LINK = "https://open.spotify.com/playlist/29KoPj20uHyOknHNJnrXEk?si=ecfc9126881f4011"
     enlaces = []
 
     client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
@@ -28,8 +30,6 @@ def obtener_enlaces_youtube():
     while results['next']: 
         results = sp.next(results)
         tracks.extend(results['items'])
-
-    urlJsonList = []
 
     file = open("canciones.txt", 'w')
     i = 1

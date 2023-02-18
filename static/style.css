@@ -18,10 +18,10 @@
 
 #titulo-h1{
   margin: 5rem 0;
-  color: tomato;
+  color: #0972E1;
 }
 
-#titulo-h5-no-results{
+#titulo-h6-no-results{
   color: #CCC;
 }
 
@@ -56,4 +56,8 @@
 
 .des{
   color: #ccc;
+}
+
+.table-row{
+  font-size: 0.7rem;
 }

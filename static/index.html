@@ -57,7 +57,7 @@
             
           </tbody>
         </table>
-        <h5 class="text-center" id="titulo-h5-no-results">No results available</h5>
+        <h6 class="text-center" id="titulo-h6-no-results">No results available</h6>
       </section>
     </main>
 
@@ -111,34 +111,33 @@
         });
 
         document.getElementById("formulario-btn-download").addEventListener("click", () => {
+          document.getElementById("modal-body").innerText = "";
+          document.getElementById("table-body").innerHTML = "";
+          $("#titulo-h6-no-results").show();
           activarLoading();
           setTimeout(function(){
-            verificarInput();
-          }, 3000);
+            obtenerEnlacesYoutube(document.getElementById("formulario-input").value);
+          }, 1000);
         });
       });
     </script>
        
     <script>
       function reportarError(error){
-        document.getElementById("table-body").innerHTML = "";
-        $("#titulo-h5-no-results").show();
-        let modalBody = document.getElementById("modal-body");
-        modalBody.innerText = "";
-        modalBody.innerText = `Error: ${JSON.stringify(error)}`;
+        document.getElementById("modal-body").innerText = `Error: ${JSON.stringify(error)}`;
         $("#modal-btn").click();
         desactivarLoading();
       }
 
       function insertarFilasTabla(result){
-        $("#titulo-h5-no-results").hide();
-        let tableBody = document.getElementById("table-body");
-        tableBody.innerHTML = "";
+        if(result.length > 0){
+          $("#titulo-h6-no-results").hide();
+        }
         result.forEach(element => {
-          tableBody.innerHTML += `
-            <tr>
+          document.getElementById("table-body").innerHTML += `
+            <tr class="table-row">
               <th scope="row">${element.indice}</th>
-              <td>${element.enlace}</td>
+              <td style="color: red;">${element.enlace}</td>
               <td>${element.track_name}</td>
               <td>${element.artist_name}</td>
               <td><button class="icon-button"><i class="fa-solid fa-rotate icon icon-convert"></i></button></td>
@@ -150,15 +149,21 @@
         desactivarLoading();
       }
 
-      function obtenerEnlacesYoutube() {
+      function obtenerEnlacesYoutube(url) {
+        let data = {
+          link: url
+        }
+        
         $.ajax({
           url: '/api/obtener_enlaces_youtube',
-          type: 'GET',
+          method: 'post',
+          contentType: "application/json",
+          data: JSON.stringify(data),
           success: function (result) {
             insertarFilasTabla(result);
           },
           error: function (error) {
-            reportarError(error);
+            reportarError("The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. Invalid url");
           }
         });
       }
@@ -175,20 +180,6 @@
       function desactivarLoading(){
         document.getElementById("formulario-btn-download").classList.replace("btn-success", "btn-outline-success");
         document.getElementById("formulario-btn-download").innerHTML = "Download";
-      }
-
-      function verificarInput(){
-        let modalBody = document.getElementById("modal-body");
-        modalBody.innerText = "";
-        let formularioInput = document.getElementById("formulario-input").value;
-        if(formularioInput == "" || formularioInput == undefined){
-          modalBody.innerText = "Debe ingresar una url válida";
-          $("#modal-btn").click();
-          desactivarLoading();
-        }
-        else{
-          obtenerEnlacesYoutube();
-        }
       }
     </script>
   </body>
