@@ -135,18 +135,38 @@
         }
         result.forEach(element => {
           document.getElementById("table-body").innerHTML += `
-            <tr class="table-row">
+            <tr class="table-row" id="row-${element.enlace}">
               <th scope="row">${element.indice}</th>
               <td style="color: red;">${element.enlace}</td>
               <td>${element.track_name}</td>
               <td>${element.artist_name}</td>
-              <td><button class="icon-button"><i class="fa-solid fa-rotate icon icon-convert"></i></button></td>
-              <td><button disabled class="icon-button"><i class="fa-solid fa-download icon icon-download des"></i></button></td>
-              <td><button disabled class="icon-button"><i class="fa-solid fa-play icon icon-play des"></i></button></td>
+              <td><button class="icon-button" id="convert-${element.enlace}" onclick="convertToMp3('${element.enlace}');"><i class="fa-solid fa-rotate icon icon-convert"></i></button></td>
+              <td><button disabled class="icon-button" id="download-${element.enlace}"><i class="fa-solid fa-download icon icon-download des"></i></button></td>
+              <td><button disabled class="icon-button" id="music-${element.enlace}"><i class="fa-solid fa-music icon icon-music des"></i></button></td>
             </tr>
           `
         });
         desactivarLoading();
+      }
+
+      function convertToMp3(link){
+        document.getElementById("modal-body").innerText = "";
+        let data = {
+          url: link
+        }
+        
+        $.ajax({
+          url: '/api/convertir_a_mp3',
+          method: 'post',
+          contentType: "application/json",
+          data: JSON.stringify(data),
+          success: function (result) {
+            console.log(JSON.stringify(result));
+          },
+          error: function (error) {
+            reportarError("The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. Invalid url");
+          }
+        });
       }
 
       function obtenerEnlacesYoutube(url) {
