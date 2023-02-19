@@ -6,6 +6,7 @@ from pytube import YouTube
 from moviepy.editor import *
 from jinja2 import Template
 import os, json, spotipy
+from datetime import datetime
 
 app = Flask(__name__)    
 
@@ -40,11 +41,15 @@ def obtener_enlaces_youtube():
         else:
             file.write('\n' + 'https://www.youtube.com' + dic[0]['url_suffix'])
         url = 'https://www.youtube.com' + dic[0]['url_suffix']
+        title = YouTube(url).title
+        duration = YouTube(url).length
         enlace = {
-            "indice": indice,
-            "enlace": url,
-            "track_name": track_name,
-            "artist_name": artist_name
+            "id": indice,
+            "link": url,
+            "title": title,
+            "artist": artist_name,
+            "track": track_name,
+            "duration": duration
         }
         enlaces.append(enlace)
         indice += 1
@@ -56,30 +61,16 @@ def get_mp3():
     url_video = request.get_json()
     url = url_video['url']
     output = "mp3"
-    nombre = YouTube(url).title
-    duracion = YouTube(url).length
-    print("     Cancion: *", nombre, "\n")
-    print("     Comenzando descarga de video...")
     mp4 = YouTube(url).streams.get_highest_resolution().download()
     mp3 = mp4.split(".mp4", 1)[0] + f".{output}"
     video_clip = VideoFileClip(mp4)
     audio_clip = video_clip.audio
-    print("     Convirtiendo video a mp3...", "\n")
     audio_clip.write_audiofile(mp3)
-    print()
-    print("     Video convertido a mp3.")
-
     audio_clip.close()
     video_clip.close()
-
     os.remove(mp4)
-    print("     Video eliminado.")
-    print("     Descarga finalizada con exito!")
-    print() 
     cancion = {
-        "nombre": nombre,
-        "duracion": duracion,
-        "enlace": url,
+        "fecha_descarga": audio_clip.datetime,
         "conversion_realizada": True
     }
     return cancion

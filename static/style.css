@@ -21,6 +21,10 @@
   color: #0972E1;
 }
 
+#section-cards{
+  margin-bottom: 5rem;
+}
+
 #titulo-h6-no-results{
   color: #CCC;
 }
@@ -34,7 +38,8 @@
 }
 
 .icon{
-  font-size: 1rem;
+  font-size: 2rem;
+  margin: 0 2rem;
 }
 
 .icon-button{
@@ -43,16 +48,29 @@
 }
 
 .icon-convert{
+  color: rgb(1, 176, 1);
+  border: none;
+}
+.icon-convert:hover{
   color: green;
 }
 
 .icon-download{
+  color: #1d447a;
+  border: none;
+}
+.icon-download:hover{
   color: #183153;
 }
 
-.icon-music{
-  color: yellow;
+.icon-mp3{
+  color: rgb(189, 189, 22);
+  border: none;
 }
+.icon-mp3:hover{
+  color: rgb(111, 111, 10);
+}
+
 
 .des{
   color: #ccc;
@@ -60,4 +78,37 @@
 
 .table-row{
   font-size: 0.7rem;
+}
+
+.p-small{
+  color: #9c9a9a;
+}
+
+.list-group-item{
+  color: #0972E1;
+}
+
+.card{
+  border: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: 0 0.5rem 0.5rem 0 #183153;
+  position: relative;
+  margin: 1rem 0;
+  padding: 1rem 0;
+}
+
+.indice{
+  position: absolute;
+  right: 0.5rem;
+  top: 0;
+  color: rgb(121, 121, 87);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.card-body-buttons{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }

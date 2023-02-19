@@ -32,32 +32,18 @@
     <main id="main">
       <section class="container">
         <h1 class="text-center" data-v-75bed125="" id="titulo-h1">Download mp3 songs from your Spotify playlist</h1>
-        <div class="col-md-8 offset-2">
+        <div class="col-12 col-md-8 offset-md-2">
           <form action="" class="d-flex" role="search" id="formulario">
             <input class="form-control" type="search" placeholder="Enter playlist url..." aria-label="Search" id="formulario-input" value="">
-            <button class="btn btn-outline-success" id="formulario-btn-download" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Presione para descargar enlaces">Download</button>
+            <button class="btn btn-outline-success" id="formulario-btn-download" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Click to download links">Download</button>
           </form>
         </div>
       </section>
 
       <section class="container">
-        <table class="table table-light table-striped">
-          <thead class="table-primary">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Youtube Link</th>
-              <th scope="col">Track Name</th>
-              <th scope="col">Artist Name</th>
-              <th scope="col">Convert</th>
-              <th scope="col">Download</th>
-              <th scope="col">Play</th>
-            </tr>
-          </thead>
-          <tbody id="table-body">
-            
-          </tbody>
-        </table>
-        <h6 class="text-center" id="titulo-h6-no-results">No results available</h6>
+        <div class="row row-cols-md-3" id="section-cards">
+
+        </div>
       </section>
     </main>
 
@@ -77,6 +63,7 @@
           <div class="modal-body" id="modal-body">
             
           </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
           </div>
@@ -112,8 +99,7 @@
 
         document.getElementById("formulario-btn-download").addEventListener("click", () => {
           document.getElementById("modal-body").innerText = "";
-          document.getElementById("table-body").innerHTML = "";
-          $("#titulo-h6-no-results").show();
+          document.getElementById("section-cards").innerHTML = "";
           activarLoading();
           setTimeout(function(){
             obtenerEnlacesYoutube(document.getElementById("formulario-input").value);
@@ -130,20 +116,26 @@
       }
 
       function insertarFilasTabla(result){
-        if(result.length > 0){
-          $("#titulo-h6-no-results").hide();
-        }
         result.forEach(element => {
-          document.getElementById("table-body").innerHTML += `
-            <tr class="table-row" id="row-${element.enlace}">
-              <th scope="row">${element.indice}</th>
-              <td style="color: red;">${element.enlace}</td>
-              <td>${element.track_name}</td>
-              <td>${element.artist_name}</td>
-              <td><button class="icon-button" id="convert-${element.enlace}" onclick="convertToMp3('${element.enlace}');"><i class="fa-solid fa-rotate icon icon-convert"></i></button></td>
-              <td><button disabled class="icon-button" id="download-${element.enlace}"><i class="fa-solid fa-download icon icon-download des"></i></button></td>
-              <td><button disabled class="icon-button" id="music-${element.enlace}"><i class="fa-solid fa-music icon icon-music des"></i></button></td>
-            </tr>
+          document.getElementById("section-cards").innerHTML += `
+            <div id="card-${element.id}" class="card col">
+              <p class="indice">#${element.id}</p>
+              <div class="card-body">
+                <h5 class="card-title"><strong>Youtube Link</stromg></h5>
+                <p class="card-text" id="link-${element.id}" style="color: red;">${element.link}</p>
+              </div>
+              <ul class="list-group list-group-flush" id="list-${element.id}">
+                <li class="list-group-item" id="title-${element.id}">Title: <small class="p-small">${element.title}</small></li>
+                <li class="list-group-item" id="artist-${element.id}">Artist: <small class="p-small">${element.artist}</small></li>
+                <li class="list-group-item" id="track-${element.id}">Track: <small class="p-small">${element.track}</small></li>
+                <li class="list-group-item" id="duration-${element.id}">Duration: <small class="p-small">${element.duration}</small></li>
+              </ul>
+              <div class="card-body text-center card-body-buttons">
+                <button class="icon-button" id="convert-${element.id}" onclick="convertToMp3('${element.link}');"><i class="fa-solid fa-rotate icon icon-convert"></i></button>
+                <button disabled class="icon-button"><i class="fa-solid fa-download icon des"></i></button>
+                <button disabled class="icon-button"><i class="fa-solid fa-music icon des"></i></button>
+              </div>
+            </div>
           `
         });
         desactivarLoading();
