@@ -70,7 +70,7 @@ def get_mp3():
     video_clip.close()
     os.remove(mp4)
     cancion = {
-        "fecha_descarga": audio_clip.datetime,
+        "fecha_descarga": datetime.now(),
         "conversion_realizada": True
     }
     return cancion

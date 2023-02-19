@@ -40,10 +40,8 @@
         </div>
       </section>
 
-      <section class="container">
-        <div class="row row-cols-md-3" id="section-cards">
-
-        </div>
+      <section class="container" id="section-cards">
+        
       </section>
     </main>
 
@@ -118,20 +116,23 @@
       function insertarFilasTabla(result){
         result.forEach(element => {
           document.getElementById("section-cards").innerHTML += `
-            <div id="card-${element.id}" class="card col">
+            <div id="card-${element.id}" class="card card-song">
               <p class="indice">#${element.id}</p>
-              <div class="card-body">
+              <div class="card-body card-body-style">
                 <h5 class="card-title"><strong>Youtube Link</stromg></h5>
                 <p class="card-text" id="link-${element.id}" style="color: red;">${element.link}</p>
               </div>
-              <ul class="list-group list-group-flush" id="list-${element.id}">
+              <ul class="list-group list-group-flush card-list-style" id="list-${element.id}">
                 <li class="list-group-item" id="title-${element.id}">Title: <small class="p-small">${element.title}</small></li>
                 <li class="list-group-item" id="artist-${element.id}">Artist: <small class="p-small">${element.artist}</small></li>
                 <li class="list-group-item" id="track-${element.id}">Track: <small class="p-small">${element.track}</small></li>
                 <li class="list-group-item" id="duration-${element.id}">Duration: <small class="p-small">${element.duration}</small></li>
               </ul>
-              <div class="card-body text-center card-body-buttons">
-                <button class="icon-button" id="convert-${element.id}" onclick="convertToMp3('${element.link}');"><i class="fa-solid fa-rotate icon icon-convert"></i></button>
+              <div id="loading-${element.id}">
+                
+              </div>
+              <div class="card-body text-center card-body-buttons" id="buttons-${element.id}">
+                <button class="icon-button" onclick="convertToMp3('${element.link}', ${element.id});"><i class="fa-solid fa-rotate icon icon-convert"></i></button>
                 <button disabled class="icon-button"><i class="fa-solid fa-download icon des"></i></button>
                 <button disabled class="icon-button"><i class="fa-solid fa-music icon des"></i></button>
               </div>
@@ -141,7 +142,31 @@
         desactivarLoading();
       }
 
-      function convertToMp3(link){
+      function armarButtonsCardLoading(id){
+        document.getElementById(`buttons-${id}`).innerHTML = `
+          <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+          <button disabled class="icon-button"><i class="fa-solid fa-download icon des"></i></button>
+          <button disabled class="icon-button"><i class="fa-solid fa-music icon des"></i></button>
+        `
+      }
+
+      function armarButtonsCardDefault(id, link){
+        document.getElementById(`buttons-${id}`).innerHTML = `
+          <button class="icon-button" onclick="convertToMp3('${link}', ${id});"><i class="fa-solid fa-rotate icon icon-convert"></i></button>
+          <button disabled class="icon-button"><i class="fa-solid fa-download icon des"></i></button>
+          <button disabled class="icon-button"><i class="fa-solid fa-music icon des"></i></button>
+        `
+      }
+
+      function armarButtonsCardSuccess(id){
+        document.getElementById(`buttons-${id}`).innerHTML = `
+          <button class="icon-button"><i class="fa-solid fa-download icon icon-download"></i></button>
+          <button class="icon-button"><i class="fa-solid fa-music icon icon-mp3"></i></button>
+        `
+      }
+
+      function convertToMp3(link, id){
+        armarButtonsCardLoading(id);
         document.getElementById("modal-body").innerText = "";
         let data = {
           url: link
@@ -153,10 +178,11 @@
           contentType: "application/json",
           data: JSON.stringify(data),
           success: function (result) {
-            console.log(JSON.stringify(result));
+            armarButtonsCardSuccess(id);
           },
           error: function (error) {
-            reportarError("The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. Invalid url");
+            reportarError("The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. Invalid url?");
+            armarButtonsCardDefault(id, link);
           }
         });
       }
@@ -175,7 +201,7 @@
             insertarFilasTabla(result);
           },
           error: function (error) {
-            reportarError("The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. Invalid url");
+            reportarError("The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application. Invalid url?");
           }
         });
       }
