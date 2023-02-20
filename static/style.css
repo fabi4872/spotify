@@ -26,10 +26,6 @@
   margin-bottom: 5rem;
 }
 
-#titulo-h6-no-results{
-  color: #CCC;
-}
-
 #formulario-input{
   height: 4rem;
 }
@@ -96,7 +92,7 @@
   box-shadow: 0 0.5rem 0.5rem 0 #183153;
   position: relative;
   margin: 1rem;
-  padding: 1rem 0;
+  padding: 1rem;
   width: 40%;
   height: auto;
 }
