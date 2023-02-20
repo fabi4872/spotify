@@ -7,6 +7,7 @@ from moviepy.editor import *
 from jinja2 import Template
 import os, json, spotipy
 from datetime import datetime
+import shutil
 
 app = Flask(__name__)    
 
@@ -66,6 +67,7 @@ def get_mp3():
     video_clip = VideoFileClip(mp4)
     audio_clip = video_clip.audio
     audio_clip.write_audiofile(mp3)
+    shutil.copy(mp3, r'D:/spotify/static/')
     audio_clip.close()
     video_clip.close()
     os.remove(mp4)
@@ -77,7 +79,7 @@ def get_mp3():
     
 @app.get('/')
 def home():
-    return send_file('static/index.html')
+    return send_file('./static/index.html')
 
 if __name__ == '__main__':
     app.run()

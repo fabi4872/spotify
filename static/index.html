@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="static/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./static/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
         integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" 
@@ -12,7 +12,7 @@
       rel="stylesheet" 
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" 
       crossorigin="anonymous"/>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="./static/style.css">
     <title>Spotify-Playlist</title>
   </head>
 
@@ -131,10 +131,17 @@
               <div id="loading-${element.id}">
                 
               </div>
+
+              <div class="text-center mt-2 mb-2">
+                <audio controls class="text-center" id="audio-${element.id}">
+                  <source src="" type="audio/mp3">
+                  Your browser does not support HTML5 audio
+                </audio>
+              </div>
+              
               <div class="card-body text-center card-body-buttons" id="buttons-${element.id}">
-                <button class="icon-button" onclick="convertToMp3('${element.link}', ${element.id});"><i class="fa-solid fa-rotate icon icon-convert"></i></button>
+                <button class="icon-button" onclick="convertToMp3('${element.link}', ${element.id}, '${element.title}');"><i class="fa-solid fa-rotate icon icon-convert"></i></button>
                 <button disabled class="icon-button"><i class="fa-solid fa-download icon des"></i></button>
-                <button disabled class="icon-button"><i class="fa-solid fa-music icon des"></i></button>
               </div>
             </div>
           `
@@ -146,7 +153,6 @@
         document.getElementById(`buttons-${id}`).innerHTML = `
           <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
           <button disabled class="icon-button"><i class="fa-solid fa-download icon des"></i></button>
-          <button disabled class="icon-button"><i class="fa-solid fa-music icon des"></i></button>
         `
       }
 
@@ -154,18 +160,20 @@
         document.getElementById(`buttons-${id}`).innerHTML = `
           <button class="icon-button" onclick="convertToMp3('${link}', ${id});"><i class="fa-solid fa-rotate icon icon-convert"></i></button>
           <button disabled class="icon-button"><i class="fa-solid fa-download icon des"></i></button>
-          <button disabled class="icon-button"><i class="fa-solid fa-music icon des"></i></button>
         `
       }
 
-      function armarButtonsCardSuccess(id){
+      function armarButtonsCardSuccess(id, title){
+        document.getElementById(`audio-${id}`).innerHTML = `
+          <source src="./static/${title}.mp3" type="audio/mp3">
+          Your browser does not support HTML5 audio
+        `
         document.getElementById(`buttons-${id}`).innerHTML = `
-          <button class="icon-button"><i class="fa-solid fa-download icon icon-download"></i></button>
-          <button class="icon-button"><i class="fa-solid fa-music icon icon-mp3"></i></button>
+          <a download="${title}" href="./static/${title}.mp3" class="icon-button"><i class="fa-solid fa-download icon icon-download"></i></a>
         `
       }
 
-      function convertToMp3(link, id){
+      function convertToMp3(link, id, title){
         armarButtonsCardLoading(id);
         document.getElementById("modal-body").innerText = "";
         let data = {
@@ -178,7 +186,7 @@
           contentType: "application/json",
           data: JSON.stringify(data),
           success: function (result) {
-            armarButtonsCardSuccess(id);
+            armarButtonsCardSuccess(id, title);
           },
           error: function (error) {
             reportarError("The server was unable to complete your request. Invalid url?, try again");
