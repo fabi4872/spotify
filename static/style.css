@@ -93,6 +93,10 @@
   color: #0972E1;
 }
 
+.card-link{
+  color: red;
+}
+
 .card-song{
   border: none;
   border-top: 1rem solid tomato;
@@ -120,6 +124,7 @@
   height: 7rem;
   overflow: hidden;
   justify-content: space-evenly;
+  padding: 0 1rem;
 }
 
 .card-list-style{
