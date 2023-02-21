@@ -40,6 +40,10 @@
         </div>
       </section>
 
+      <section id="all-download" class="text-center mb-5">
+
+      </section>
+
       <section class="container" id="section-cards">
         
       </section>
@@ -56,7 +60,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="staticBackdropLabel">Spotify-List Message</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" style="color: white;" aria-label="Close"></button>
           </div>
           <div class="modal-body" id="modal-body">
             
@@ -97,6 +101,7 @@
 
         document.getElementById("formulario-btn-download").addEventListener("click", () => {
           document.getElementById("modal-body").innerText = "";
+          document.getElementById("modal-body").innerHTML = "";
           document.getElementById("section-cards").innerHTML = "";
           activarLoading();
           setTimeout(function(){
@@ -117,6 +122,12 @@
         return hour + ':' + minute + ':' + second;
       }
 
+      function reportarSuccess(result){
+        let message = `<p>The search returns <strong>${result.length} results</strong></p>`;
+        document.getElementById("modal-body").innerHTML = message;
+        $("#modal-btn").click();
+      }
+
       function reportarError(error){
         document.getElementById("modal-body").innerText = `Error: ${JSON.stringify(error)}`;
         $("#modal-btn").click();
@@ -124,8 +135,13 @@
       }
 
       function insertarFilasTabla(result){
+        let elementAllDownload = document.getElementById("all-download");
+        let elementSectionCards = document.getElementById("section-cards");
+        elementAllDownload.innerHTML = `
+          <button class="btn btn-primary btn-lg" id="all-download" type="button">Click to download all songs</button>
+        `
         result.forEach(element => {
-          document.getElementById("section-cards").innerHTML += `
+          elementSectionCards.innerHTML += `
             <div id="card-${element.id}" class="card card-song">
               <p class="message-copy" id="message-copy-${element.id}">COPIED LINK</p>
               <p class="indice">#${element.id}</p>
@@ -232,6 +248,7 @@
           contentType: "application/json",
           data: JSON.stringify(data),
           success: function (result) {
+            reportarSuccess(result);
             insertarFilasTabla(result);
           },
           error: function (error) {

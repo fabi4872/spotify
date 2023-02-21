@@ -149,6 +149,11 @@
   align-items: center;
 }
 
+.modal-header{
+  background-color: tomato;
+  color: white;
+}
+
 
 
 .lds-ellipsis {
