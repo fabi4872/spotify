@@ -67,7 +67,7 @@ def get_mp3():
     video_clip = VideoFileClip(mp4)
     audio_clip = video_clip.audio
     audio_clip.write_audiofile(mp3)
-    shutil.copy(mp3, r'D:/spotify/static/')
+    shutil.copy(mp3, os.getcwdb() + '/static/')
     audio_clip.close()
     video_clip.close()
     os.remove(mp4)

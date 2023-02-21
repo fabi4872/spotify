@@ -19,7 +19,7 @@
   <body>
     <header>
       <nav class="navbar bg-body-tertiary">
-        <div class="container">
+        <div class="container" id="navbar-header">
           <a class="navbar-brand logo" href=""><strong>Spotify-Playlist</strong></a>  
           <div>
             <a href="" class="btn btn-outline-dark">Sign in</a>
@@ -127,7 +127,7 @@
         result.forEach(element => {
           document.getElementById("section-cards").innerHTML += `
             <div id="card-${element.id}" class="card card-song">
-              <p class="message-copy" id="message-copy-${element.id}">Copied link</p>
+              <p class="message-copy" id="message-copy-${element.id}">COPIED LINK</p>
               <p class="indice">#${element.id}</p>
               <div class="card-body card-body-style">
                 <div class="d-flex">
