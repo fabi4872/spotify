@@ -107,6 +107,16 @@
     </script>
        
     <script>
+      function secondsToString(seconds) {
+        let hour = Math.floor(seconds / 3600);
+        hour = (hour < 10)? '0' + hour : hour;
+        let minute = Math.floor((seconds / 60) % 60);
+        minute = (minute < 10)? '0' + minute : minute;
+        let second = seconds % 60;
+        second = (second < 10)? '0' + second : second;
+        return hour + ':' + minute + ':' + second;
+      }
+
       function reportarError(error){
         document.getElementById("modal-body").innerText = `Error: ${JSON.stringify(error)}`;
         $("#modal-btn").click();
@@ -117,16 +127,20 @@
         result.forEach(element => {
           document.getElementById("section-cards").innerHTML += `
             <div id="card-${element.id}" class="card card-song">
+              <p class="message-copy" id="message-copy-${element.id}">Copied link</p>
               <p class="indice">#${element.id}</p>
               <div class="card-body card-body-style">
-                <h5 class="card-title"><strong>Youtube Link</stromg></h5>
+                <div class="d-flex">
+                  <h5 class="card-title"><strong>Youtube Link</stromg></h5>
+                  <button class="icon-button" id="copy-${element.id}"><i class="fa-regular fa-copy icon-copy"></i></button>
+                </div>
                 <p class="card-text" id="link-${element.id}" style="color: red;">${element.link}</p>
               </div>
               <ul class="list-group list-group-flush card-list-style" id="list-${element.id}">
                 <li class="list-group-item" id="title-${element.id}">Title: <small class="p-small">${element.title}</small></li>
                 <li class="list-group-item" id="artist-${element.id}">Artist: <small class="p-small">${element.artist}</small></li>
                 <li class="list-group-item" id="track-${element.id}">Track: <small class="p-small">${element.track}</small></li>
-                <li class="list-group-item" id="duration-${element.id}">Duration: <small class="p-small">${element.duration}</small></li>
+                <li class="list-group-item" id="duration-${element.id}">Duration: <small class="p-small">${secondsToString(element.duration)} (approximate)</small></li>
               </ul>
               <div id="loading-${element.id}">
                 
@@ -145,6 +159,18 @@
               </div>
             </div>
           `
+        });
+
+        result.forEach(element => {
+          $(`#message-copy-${element.id}`).hide();
+          document.getElementById(`copy-${element.id}`).addEventListener('click', () => {
+            if (navigator && navigator.clipboard && navigator.clipboard.writeText)
+              navigator.clipboard.writeText(element.link);
+              $(`#message-copy-${element.id}`).show();
+              setTimeout(function(){
+                $(`#message-copy-${element.id}`).hide();
+              }, 2000);
+          });
         });
         desactivarLoading();
       }

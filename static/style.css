@@ -52,6 +52,23 @@
   color: green;
 }
 
+.message-copy{
+  position: absolute;
+  left: 0.8rem;
+  top: 0.6rem;
+  color: rgb(121, 121, 87);
+  font-size: 0.7rem;
+}
+
+.icon-copy{
+  color: #7c7878;
+  border: none;
+  margin: 0 1rem;
+}
+.icon-copy:hover{
+  color: #4c4848;
+}
+
 .icon-download{
   color: #1d447a;
   border: none;
