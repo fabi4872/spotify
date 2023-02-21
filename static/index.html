@@ -40,7 +40,7 @@
         </div>
       </section>
 
-      <section id="all-download" class="text-center mb-5">
+      <section id="all-convert" class="text-center mb-5">
 
       </section>
 
@@ -135,10 +135,10 @@
       }
 
       function insertarFilasTabla(result){
-        let elementAllDownload = document.getElementById("all-download");
+        let elementAllConvert = document.getElementById("all-convert");
         let elementSectionCards = document.getElementById("section-cards");
-        elementAllDownload.innerHTML = `
-          <button class="btn btn-primary btn-lg" id="all-download" type="button">Click to download all songs</button>
+        elementAllConvert.innerHTML = `
+          <button class="btn btn-light btn-lg" id="all" type="button">Click to convert all songs</button>
         `
         result.forEach(element => {
           elementSectionCards.innerHTML += `
@@ -188,6 +188,14 @@
               }, 2000);
           });
         });
+
+        document.getElementById('all').addEventListener('click', () => {
+          result.forEach(element => {
+            armarButtonsCardLoading(element.id);
+            convertToMp3(element.link, element.id, element.title);
+          });
+        });
+
         desactivarLoading();
       }
 
