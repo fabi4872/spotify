@@ -79,7 +79,7 @@ def get_mp3():
     
 @app.get('/')
 def home():
-    return send_file('./static/index.html')
+    return send_file('index.html')
 
 if __name__ == '__main__':
     app.run()
