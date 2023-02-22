@@ -41,7 +41,7 @@
       </section>
 
       <section id="all-convert" class="text-center mb-5">
-
+        
       </section>
 
       <section class="container" id="section-cards">
@@ -102,6 +102,7 @@
         document.getElementById("formulario-btn-download").addEventListener("click", () => {
           document.getElementById("modal-body").innerText = "";
           document.getElementById("modal-body").innerHTML = "";
+          document.getElementById("all-convert").innerHTML = "";
           document.getElementById("section-cards").innerHTML = "";
           activarLoading();
           setTimeout(function(){
@@ -141,6 +142,13 @@
           <button class="btn btn-light btn-lg" id="all" type="button">Click to convert all songs</button>
         `
         result.forEach(element => {
+          for(let i=0; i<10; i++){
+            element.title = element.title.replace(',', '');
+            element.title = element.title.replace('|', '');
+            element.title = element.title.replace('"', '');
+            element.title = element.title.replace('.', '');
+          }
+          
           elementSectionCards.innerHTML += `
             <div id="card-${element.id}" class="card card-song">
               <p class="message-copy" id="message-copy-${element.id}">COPIED LINK</p>
