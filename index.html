@@ -34,14 +34,16 @@
         <h1 class="text-center" data-v-75bed125="" id="titulo-h1">Download mp3 songs from your Spotify playlist</h1>
         <div class="col-12 col-md-8 offset-md-2">
           <form action="" class="d-flex" role="search" id="formulario">
-            <input class="form-control" type="search" placeholder="Enter playlist url..." aria-label="Search" id="formulario-input" value="">
+            <input autocomplete="off" class="form-control" type="search" placeholder="Enter playlist url..." aria-label="Search" id="formulario-input" value="">
             <button class="btn btn-outline-success" id="formulario-btn-download" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Click to download links">Download</button>
           </form>
         </div>
       </section>
 
-      <section id="all-convert" class="text-center mb-5">
-        
+      <section class="text-center">
+        <div id="all-convert" class="gb mb-5">
+          
+        </div>
       </section>
 
       <section class="container" id="section-cards">
@@ -138,6 +140,7 @@
       function insertarFilasTabla(result){
         let elementAllConvert = document.getElementById("all-convert");
         let elementSectionCards = document.getElementById("section-cards");
+        
         elementAllConvert.innerHTML = `
           <button class="btn btn-light btn-lg" id="all" type="button">Click to convert all songs</button>
         `
@@ -197,7 +200,7 @@
           });
         });
 
-        document.getElementById('all').addEventListener('click', () => {
+        document.getElementById('all').addEventListener('click', () => {   
           result.forEach(element => {
             armarButtonsCardLoading(element.id);
             convertToMp3(element.link, element.id, element.title);
@@ -223,11 +226,11 @@
 
       function armarButtonsCardSuccess(id, title){
         document.getElementById(`audio-${id}`).innerHTML = `
-          <source src="./static/${title}.mp3" type="audio/mp3">
+          <source src="./static/music/${title}.mp3" type="audio/mp3">
           Your browser does not support HTML5 audio
         `
         document.getElementById(`buttons-${id}`).innerHTML = `
-          <a download="${title}" href="./static/${title}.mp3" class="icon-button"><i class="fa-solid fa-download icon icon-download"></i></a>
+          <a download="${title}" href="./static/music/${title}.mp3" class="icon-button"><i class="fa-solid fa-download icon icon-download"></i></a>
         `
       }
 

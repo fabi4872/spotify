@@ -13,6 +13,9 @@ app = Flask(__name__)
 
 @app.post('/api/obtener_enlaces_youtube')
 def obtener_enlaces_youtube():
+    dir = './static/music/'
+    for file in os.scandir(dir):
+        os.remove(file.path)
     new_link = request.get_json()
     playlist_LINK = new_link['link']
     cid = "2fe4fd32de64419988cfd0e7fb6e812e"
@@ -67,10 +70,11 @@ def get_mp3():
     video_clip = VideoFileClip(mp4)
     audio_clip = video_clip.audio
     audio_clip.write_audiofile(mp3)
-    shutil.copy(mp3, r'./static/')
+    shutil.copy(mp3, r'./static/music/')
     audio_clip.close()
     video_clip.close()
     os.remove(mp4)
+    os.remove(mp3)
     cancion = {
         "fecha_descarga": datetime.now(),
         "conversion_realizada": True
