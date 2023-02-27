@@ -141,15 +141,19 @@
         let elementAllConvert = document.getElementById("all-convert");
         let elementSectionCards = document.getElementById("section-cards");
         
-        elementAllConvert.innerHTML = `
-          <button class="btn btn-light btn-lg" id="all" type="button">Click to convert all songs</button>
-        `
+        if (result.length > 0){
+          elementAllConvert.innerHTML = `
+            <button class="btn btn-light btn-lg" id="all" type="button">Click to convert all songs</button>
+            `
+        }
+        
         result.forEach(element => {
           for(let i=0; i<10; i++){
             element.title = element.title.replace(',', '');
             element.title = element.title.replace('|', '');
             element.title = element.title.replace('"', '');
             element.title = element.title.replace('.', '');
+            element.title = element.title.replace("'", '');
           }
           
           elementSectionCards.innerHTML += `
